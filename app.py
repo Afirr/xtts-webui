@@ -1,6 +1,7 @@
 from scripts.modeldownloader import install_deepspeed_based_on_python_version
 from argparse import ArgumentParser
 from loguru import logger
+from pyngrok import ngrok
 import os
 import subprocess
 
@@ -65,5 +66,13 @@ install_deepspeed_based_on_python_version()
 
 if __name__ == "__main__":
     from xtts_webui import demo
-    demo.launch(share=args.share, inbrowser=True,
-                server_name=args.host, server_port=args.port)
+    # Open an ngrok tunnel to the Gradio interface
+    public_url = ngrok.connect(args.port)
+    print(f"ngrok tunnel \"{public_url}\" -> \"http://localhost:{args.port}\"")
+
+    demo.launch(
+        share=False,
+        debug=False,
+        server_port=args.port,
+        server_name="0.0.0.0"
+    )
