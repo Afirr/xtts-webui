@@ -7,6 +7,8 @@ import os
 import gradio as gr
 from pathlib import Path
 from loguru import logger
+from pyngrok import ngrok
+
 
 from i18n.i18n import I18nAuto
 i18n = I18nAuto()
@@ -103,5 +105,13 @@ with gr.Blocks(css=css) as demo:
     # LOAD FUNCTIONS AND HANDLERS
     import modules
 if __name__ == "__main__":
-    demo.queue()
-    demo.launch(inbrowser=True, share=True)
+    # Open an ngrok tunnel to the Gradio interface
+    public_url = ngrok.connect(args.port)
+    print(f"ngrok tunnel \"{public_url}\" -> \"http://localhost:{args.port}\"")
+
+    demo.launch(
+        share=False,
+        debug=False,
+        server_port=args.port,
+        server_name="0.0.0.0"
+    )
