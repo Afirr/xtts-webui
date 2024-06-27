@@ -63,7 +63,7 @@ if args.rvc:
 
 
 if __name__ == "__main__":
-    from xtts_webui import demo
+from xtts_webui import demo
     # Open an ngrok tunnel to the Gradio interface
     public_url = ngrok.connect(args.port)
     print(f"ngrok tunnel \"{public_url}\" -> \"http://localhost:{args.port}\"")
